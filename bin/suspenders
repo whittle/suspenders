@@ -42,11 +42,16 @@ def installed?(gem_name)
   installed_gems.any?
 end
 
+def suspenders_ref
+  run("git ls-remote suspenders HEAD").squish.split(' ').first
+end
+
 run("mkdir #{project_directory}")
 Dir.chdir(project_directory) or fail("Couldn't change to #{project_directory}")
 run("git init")
 run("git remote add suspenders #{template_url}")
-run("git pull suspenders master")
+run("git commit --allow-empty -m 'First commit for #{project_name}'")
+run("git pull --squash suspenders master")
 
 Dir.glob("#{project_directory}/**/*").each do |file|
   search_and_replace(file, changeme, project_name)
@@ -57,7 +62,7 @@ Dir.glob("#{project_directory}/**/session_store.rb").each do |file|
   search_and_replace(file, changesession, Digest::MD5.hexdigest("#{project_name} #{datestring}"))
 end
 
-run("git commit -a -m 'Initial commit'")
+run("git commit -a -m 'Initial commit from Suspenders (#{suspenders_ref})'")
 
 # can't vendor nokogiri because it has native extensions
 unless installed?("nokogiri")
@@ -68,6 +73,10 @@ end
 unless installed?("RedCloth")
   run "sudo gem install RedCloth --version='4.2.2'"
 end
+
+run("rake gems:refresh_specs")
+run("rake db:create RAILS_ENV=development")
+run("rake db:create RAILS_ENV=test")
 
 run("script/generate clearance")
 run("script/generate clearance_features -f")
