@@ -22,3 +22,30 @@ When 'I drop and create the required databases' do
     system("rake db:create")
   end
 end
+
+When /I create a project called (\w+) with SUDO set to (\w+)/ do |project_name, sudo|
+  bin_path = File.expand_path('../../bin', File.dirname(__FILE__))
+  sudo_path = File.dirname(__FILE__) + '/support/bin'
+  command = "PATH=#{sudo_path}:#{ENV['PATH']} SUDO=#{sudo} #{bin_path}/suspenders create #{project_name}"
+  out = `#{command}`
+  fail "Creating project #{project_name} failed: #$?\n#{out}" if $? != 0
+end
+
+Given 'the fake sudo command is used' do
+  path = File.dirname(__FILE__) + '/support/bin'
+  ENV['PATH'] = "#{path}:#{ENV['PATH']}"
+end
+
+Given 'I set the $variable environment variable to $value' do |variable, value|
+  ENV[variable] = value
+end
+
+Then 'the sudo command should not have been used' do
+  File.exists?('../support/sudos_used').should be_false
+end
+
+Then 'the following commands should have been called with sudo' do |table|
+  contents = ''
+  File.open('../../support/sudos_used', 'r') { |file| contents += file.gets }
+  contents.should include(row['command'])
+end

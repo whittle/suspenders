@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+File.open('../sudos_used', 'a+') do |file|
+  file.puts ARGV.join(' ')
+end

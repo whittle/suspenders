@@ -40,12 +40,12 @@ module Suspenders
 
       # can't vendor nokogiri because it has native extensions
       unless installed?("nokogiri")
-        run "sudo gem install nokogiri --version='1.4.0'"
+        run_with_sudo "gem install nokogiri --version='1.4.0'"
       end
 
       # need RedCloth installed for clearance generators to run.
       unless installed?("RedCloth")
-        run "sudo gem install RedCloth --version='4.2.2'"
+        run_with_sudo "gem install RedCloth --version='4.2.2'"
       end
 
       run("rake gems:refresh_specs")
