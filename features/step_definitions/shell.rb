@@ -25,8 +25,11 @@ end
 
 When /I create a project called (\w+) with SUDO set to (\w+)/ do |project_name, sudo|
   bin_path = File.expand_path('../../bin', File.dirname(__FILE__))
-  sudo_path = File.dirname(__FILE__) + '/support/bin'
-  command = "PATH=#{sudo_path}:#{ENV['PATH']} SUDO=#{sudo} #{bin_path}/suspenders create #{project_name}"
+  sudo_path = File.expand_path('../support/bin', File.dirname(__FILE__))
+  command = "PATH=#{sudo_path}:#{ENV['PATH']} SUDO=#{sudo} #{bin_path}/suspenders create #{project_name} 2>&1"
+  puts "*"*80
+  puts "Running command:\n#{command}"
+  puts "*"*80
   out = `#{command}`
   fail "Creating project #{project_name} failed: #$?\n#{out}" if $? != 0
 end
@@ -45,7 +48,13 @@ Then 'the sudo command should not have been used' do
 end
 
 Then 'the following commands should have been called with sudo' do |table|
-  contents = ''
-  File.open('../../support/sudos_used', 'r') { |file| contents += file.gets }
+  contents = IO.read(File.expand_path('../support/sudos_used', File.dirname(__FILE__)))
   contents.should include(row['command'])
 end
+
+When 'the following gems are not installed' do |table|
+  table.hashes.each do |row|
+    SourceIndex.fake_uninstall_gem(row['gem'])
+  end
+end
+

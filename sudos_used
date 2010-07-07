@@ -1,0 +1,7 @@
+gem install nokogiri --version=1.4.0
+gem install RedCloth --version=4.2.2
+gem install nokogiri --version=1.4.0
+gem install RedCloth --version=4.2.2
+gem install nokogiri --version=1.4.0
+gem install RedCloth --version=4.2.2
+gem install nokogiri --version=1.4.0

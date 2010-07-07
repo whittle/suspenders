@@ -2,6 +2,10 @@ Feature: Disabling sudo with an environment variable
 
   @creates_blog
   Scenario: the sudo environment variable is not set
+    Given the following gems are not installed
+      | gem       |
+      | nokogiri  |
+      | RedCloth  |
     When I create a project called blog with SUDO set to true
     Then the following commands should have been called with sudo
       | command                      |

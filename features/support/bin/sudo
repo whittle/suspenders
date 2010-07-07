@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+puts "Running fake sudo with #{ARGV}"
 File.open('../sudos_used', 'a+') do |file|
   file.puts ARGV.join(' ')
 end
