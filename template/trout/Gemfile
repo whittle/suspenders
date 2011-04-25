@@ -31,11 +31,8 @@ group :test do
   gem "database_cleaner"
   gem "fakeweb"
   gem "sham_rack"
-  gem "nokogiri"
   gem "timecop"
-  gem "treetop"
   gem "shoulda"
   gem "launchy"
   gem "akephalos"
-  gem "thin"
 end
