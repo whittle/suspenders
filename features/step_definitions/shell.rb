@@ -1,6 +1,6 @@
 When 'I run the rake task "$task_name"' do |task_name|
   Dir.chdir('test_project') do
-    system("rake #{task_name}")
+    system("bundle exec rake #{task_name}")
   end
 end
 
@@ -16,9 +16,10 @@ end
 
 When 'I drop and create the required databases' do
   Dir.chdir('test_project') do
-    system("rake db:drop RAILS_ENV=test")
-    system("rake db:drop")
-    system("rake db:create RAILS_ENV=test")
-    system("rake db:create")
+    system("bundle exec rake db:drop RAILS_ENV=test")
+    system("bundle exec rake db:drop")
+    system("bundle exec rake db:create RAILS_ENV=test")
+    system("bundle exec rake db:create")
+    system("bundle exec rake db:test:prepare")
   end
 end
