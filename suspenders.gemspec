@@ -29,34 +29,6 @@ rush to build something amazing; don't use it if you like missing deadlines.
   s.add_dependency('trout', '>= 0.3.0')
   s.add_development_dependency('cucumber', '~> 1.0.2')
 
-  # = MANIFEST =
-  s.files = %w[
-    CONTRIBUTING.md
-    LICENSE
-    README.md
-    Rakefile
-    bin/suspenders
-    features/rake_clean.feature
-    features/step_definitions/shell.rb
-    lib/create.rb
-    lib/errors.rb
-    suspenders.gemspec
-    template/files/README_FOR_SUSPENDERS
-    template/files/_flashes.html.erb
-    template/files/_javascript.html.erb
-    template/files/body_class_helper.rb
-    template/files/cucumber_assertions_hack
-    template/files/errors.rb
-    template/files/factory_girl_steps.rb
-    template/files/postgresql_database.yml.erb
-    template/files/suspenders_gitignore
-    template/files/suspenders_layout.html.erb.erb
-    template/files/time_formats.rb
-    template/suspenders.rb
-    template/trout/Gemfile
-    template/trout/public/javascripts/prefilled_input.js
-  ]
-  # = MANIFEST =
-
-  s.test_files = s.files.select {|path| path =~ /^features/ }
+  s.files = `git ls-files`.split "\n"
+  s.test_files = `git ls-files -- {features}/*`.split "\n"
 end
